@@ -36,17 +36,18 @@ function App() {
       }}
     >
       <AppShell.Navbar p='md' bg='gray.0'>
-        <Flex gap='4px' align='center'>
+        <Flex gap='4px' align='flex-start' p='md'>
           <Text
             fw={900}
-            size='xl'
-            tt='capitalize'
+            size='36px'
+            component='h1'
+            tt='uppercase'
             variant='gradient'
             gradient={{ from: 'blue', to: 'pink', deg: 90 }}
           >
             {__APP_NAME__}
           </Text>
-          <Text size='xs' c='dimmed'>
+          <Text size='xs' c='dimmed' fw="500">
             {__APP_VERSION__}
           </Text>
         </Flex>
