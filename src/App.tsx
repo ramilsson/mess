@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import {
   Flex,
   Grid,
@@ -7,26 +6,15 @@ import {
   Divider,
   AppShell,
   Container,
+  Paper,
+  Title,
 } from '@mantine/core';
 
-import { TaskList } from './components';
-import type { Resource, Task, TaskStatus } from './types';
-import { TASK_COLLECTION_ID, TASK_STATUS_COLLECTION_ID } from './constants';
-import { fetchResources } from './utils';
+import { TaskCreateButton, TaskList } from './components';
+import { useTaskStatusesQuery } from './hooks';
 
 function App() {
-  const [tasks, setTasks] = useState<Resource<Task>[]>([]);
-  const [taskStatuses, setTaskStatuses] = useState<Resource<TaskStatus>[]>([]);
-
-  useEffect(() => {
-    fetchResources<Task>(TASK_COLLECTION_ID)
-      .then(setTasks)
-      .catch(console.error);
-
-    fetchResources<TaskStatus>(TASK_STATUS_COLLECTION_ID)
-      .then(setTaskStatuses)
-      .catch(console.error);
-  }, []);
+  const { data: taskStatuses } = useTaskStatusesQuery();
 
   return (
     <AppShell
@@ -57,12 +45,21 @@ function App() {
         <Stack></Stack>
       </AppShell.Navbar>
       <AppShell.Main>
+        <Container pt='md' fluid>
+          <Paper p='md' withBorder>
+            <Flex justify='space-between'>
+              <Title order={2}>Tasks</Title>
+              <TaskCreateButton />
+            </Flex>
+          </Paper>
+        </Container>
+
         <Container p='md' fluid>
           <Grid grow>
-            {taskStatuses.map((taskStatus) => {
+            {taskStatuses?.map((taskStatus) => {
               return (
                 <Grid.Col key={taskStatus.id} span={3}>
-                  <TaskList tasks={tasks} status={taskStatus} />
+                  <TaskList status={taskStatus} />
                 </Grid.Col>
               );
             })}
