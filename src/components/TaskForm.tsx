@@ -27,10 +27,10 @@ export function TaskForm(props: TaskFormProps) {
 
   const { data: taskStatuses } = useTaskStatusesQuery();
 
-  const taskStatusOptions = taskStatuses?.map((taskStatus) => {
+  const taskStatusOptions = taskStatuses?.map((status) => {
     return {
-      label: taskStatus.attributes.label,
-      value: taskStatus.attributes.code,
+      label: status.payload.label,
+      value: status.payload.code,
     };
   });
 

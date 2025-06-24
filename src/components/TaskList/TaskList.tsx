@@ -18,15 +18,15 @@ export function TaskList(props: TaskListProps) {
 
   const filteredTasks = useMemo(() => {
     return tasks?.filter(
-      (task) => status.attributes.code === task.attributes.status
+      (task) => status.payload.code === task.payload.status
     );
-  }, [tasks, status.attributes.code]);
+  }, [tasks, status.payload.code]);
 
   return (
     <Paper p='md' bg='gray.0' pos='relative' withBorder>
       <Stack>
         <Group>
-          <Text fw='500'>{status.attributes.label}</Text>
+          <Text fw='500'>{status.payload.label}</Text>
         </Group>
         <Box>
           <Stack align='stretch' justify='center' gap='xs'>

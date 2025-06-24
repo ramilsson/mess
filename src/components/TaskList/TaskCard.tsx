@@ -14,7 +14,7 @@ interface TaskCardProps {
 export function TaskCard(props: TaskCardProps) {
   const { task } = props;
 
-  const { title, storypoint, description } = task.attributes;
+  const { title, storypoint, description } = task.payload;
 
   const taskUpdateMutation = useTaskUpdateMutation(task);
 
@@ -28,7 +28,7 @@ export function TaskCard(props: TaskCardProps) {
       size: 'lg',
       title: 'Edit task',
       children: (
-        <TaskForm initialValues={task.attributes} onSubmit={handleSubmit} />
+        <TaskForm initialValues={task.payload} onSubmit={handleSubmit} />
       ),
     });
   };
