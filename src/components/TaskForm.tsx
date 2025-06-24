@@ -40,7 +40,7 @@ export function TaskForm(props: TaskFormProps) {
       title: initialValues?.title || 'Task',
       description: initialValues?.description || '',
       storypoint: initialValues?.storypoint || STORYPOINT_OPTIONS[0],
-      status: taskStatusOptions?.[0]?.value || '',
+      status: initialValues?.status || taskStatusOptions?.[0]?.value || '',
     },
     validate: {
       title: (value: string) => (value ? null : EMPTY_TITLE_ERROR),
