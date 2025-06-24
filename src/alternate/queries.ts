@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { API_URL } from '../settings';
 import { type Resource } from './types';
+import { notifications } from '@mantine/notifications';
 
 export function useResourcesQuery<TPayload extends Record<string, unknown>>(
   collectionId: string
@@ -42,6 +43,15 @@ export function useResourceCreateMutation<
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['resource', collectionId] });
     },
+    onError: (error) => {
+      console.error(error);
+
+      notifications.show({
+        title: error.name,
+        message: error.message,
+        color: 'red',
+      });
+    },
   });
 }
 
@@ -62,6 +72,15 @@ export function useResourceUpdateMutation<
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['resource', collectionId] });
+    },
+    onError: (error) => {
+      console.error(error);
+
+      notifications.show({
+        title: error.name,
+        message: error.message,
+        color: 'red',
+      });
     },
   });
 }
