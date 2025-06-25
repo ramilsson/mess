@@ -1,2 +1,4 @@
 export const TASK_COLLECTION_ID = '2372edff-f539-46ec-b1ab-713d81520daf';
 export const TASK_STATUS_COLLECTION_ID = '512e4216-5a11-4b46-b054-8620886a6245';
+export const TASK_PRIORITY_COLLECTION_ID =
+  'e73db021-7887-4de6-a68a-48dab0ae7c30';

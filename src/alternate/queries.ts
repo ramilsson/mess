@@ -6,7 +6,8 @@ import { type Resource } from './types';
 import { notifications } from '@mantine/notifications';
 
 export function useResourcesQuery<TPayload extends Record<string, unknown>>(
-  collectionId: string
+  collectionId: string,
+  include?: (keyof TPayload)[]
 ) {
   return useQuery({
     queryKey: ['resource', collectionId],
@@ -15,7 +16,22 @@ export function useResourcesQuery<TPayload extends Record<string, unknown>>(
       const response = await axios.get<Resource<TPayload>[]>(
         `${API_URL}/resource`,
         {
-          params: { collectionId },
+          params: { collectionId, include: include || [] },
+          paramsSerializer: (params) => {
+            const searchParams = new URLSearchParams();
+
+            for (const key in params) {
+              const value = params[key];
+
+              if (Array.isArray(value)) {
+                value.forEach((item) => searchParams.append(key, item));
+              } else {
+                searchParams.append(key, value);
+              }
+            }
+
+            return searchParams.toString();
+          },
         }
       );
 
@@ -25,12 +41,12 @@ export function useResourcesQuery<TPayload extends Record<string, unknown>>(
 }
 
 export function useResourceCreateMutation<
-  TPayload extends Record<string, unknown>
+  TPayloadIn extends Record<string, unknown>
 >(collectionId: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: TPayload) => {
+    mutationFn: (payload: TPayloadIn) => {
       return axios.request({
         method: 'post',
         url: `${API_URL}/resource`,
@@ -56,14 +72,15 @@ export function useResourceCreateMutation<
 }
 
 export function useResourceUpdateMutation<
-  TPayload extends Record<string, unknown>
+  TPayload extends Record<string, unknown>,
+  TPayloadIn extends Record<string, unknown>
 >(resource: Resource<TPayload>) {
   const resourceId = resource.id;
   const collectionId = resource.collectionId;
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: TPayload) => {
+    mutationFn: (payload: TPayloadIn) => {
       return axios.request({
         method: 'patch',
         url: `${API_URL}/resource/${resourceId}`,

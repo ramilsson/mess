@@ -17,10 +17,8 @@ export function TaskList(props: TaskListProps) {
   const { data: tasks } = useTasksQuery();
 
   const filteredTasks = useMemo(() => {
-    return tasks?.filter(
-      (task) => status.payload.code === task.payload.status
-    );
-  }, [tasks, status.payload.code]);
+    return tasks?.filter((task) => status.id === task.payload.status.id);
+  }, [tasks, status.id]);
 
   return (
     <Paper p='md' bg='gray.0' pos='relative' withBorder>

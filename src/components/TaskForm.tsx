@@ -3,34 +3,41 @@ import {
   Text,
   Textarea,
   TextInput,
-  NativeSelect,
+  Select,
   SegmentedControl,
   Group,
   Button,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
-import { useTaskStatusesQuery } from '../hooks';
-import type { Task } from '../types';
+import { useTaskStatusesQuery, useTaskPrioritiesQuery } from '../hooks';
+import type { Task, TaskIn } from '../types';
 
 interface TaskFormProps {
   initialValues?: Task;
-  onSubmit: (values: Task) => void;
+  onSubmit: (values: TaskIn) => void;
 }
 
-const EMPTY_TITLE_ERROR = 'Title cannot be empty';
-const EMPTY_STATUS_ERROR = 'Status cannot be empty';
+const EMPTY_FIELD_ERROR = 'Field cannot be empty';
 const STORYPOINT_OPTIONS = ['1', '2', '3', '5', '8', '13'];
 
 export function TaskForm(props: TaskFormProps) {
   const { initialValues, onSubmit } = props;
 
   const { data: taskStatuses } = useTaskStatusesQuery();
+  const { data: taskPriorities } = useTaskPrioritiesQuery();
 
   const taskStatusOptions = taskStatuses?.map((status) => {
     return {
+      value: status.id,
       label: status.payload.label,
-      value: status.payload.code,
+    };
+  });
+
+  const taskPriorityOptions = taskPriorities?.map((priority) => {
+    return {
+      value: priority.id,
+      label: priority.payload.label,
     };
   });
 
@@ -40,11 +47,13 @@ export function TaskForm(props: TaskFormProps) {
       title: initialValues?.title || 'Task',
       description: initialValues?.description || '',
       storypoint: initialValues?.storypoint || STORYPOINT_OPTIONS[0],
-      status: initialValues?.status || taskStatusOptions?.[0]?.value || '',
+      priority: initialValues?.priority?.id || '',
+      status: initialValues?.status.id || taskStatusOptions?.[0]?.value || '',
     },
     validate: {
-      title: (value: string) => (value ? null : EMPTY_TITLE_ERROR),
-      status: (value: string) => (value ? null : EMPTY_STATUS_ERROR),
+      title: (value: string) => (value ? null : EMPTY_FIELD_ERROR),
+      status: (value: string) => (value ? null : EMPTY_FIELD_ERROR),
+      priority: (value: string) => (value ? null : EMPTY_FIELD_ERROR),
     },
   });
 
@@ -64,7 +73,7 @@ export function TaskForm(props: TaskFormProps) {
           {...form.getInputProps('description')}
         />
 
-        <Group align='start'>
+        <Group align='start' wrap='nowrap'>
           <div>
             <Text size='sm' fw={500}>
               Storypoint
@@ -77,9 +86,21 @@ export function TaskForm(props: TaskFormProps) {
           </div>
           <div>
             <Text size='sm' fw={500}>
+              Priority
+            </Text>
+            <Select
+              placeholder='Select priority'
+              data={taskPriorityOptions}
+              key={form.key('priority')}
+              {...form.getInputProps('priority')}
+            />
+          </div>
+          <div>
+            <Text size='sm' fw={500}>
               Status
             </Text>
-            <NativeSelect
+            <Select
+              placeholder='Select status'
               data={taskStatusOptions}
               key={form.key('status')}
               {...form.getInputProps('status')}

@@ -1,6 +1,6 @@
 import { Button } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import type { Task } from '../types';
+import type { TaskIn } from '../types';
 import { useTaskCreateMutation } from '../hooks';
 import { TaskForm } from './TaskForm';
 
@@ -8,7 +8,7 @@ export function TaskCreateButton() {
   const taskCreateMutation = useTaskCreateMutation();
 
   const handleClick = () => {
-    const handleSubmit = (values: Task) => {
+    const handleSubmit = (values: TaskIn) => {
       modals.closeAll();
       taskCreateMutation.mutate(values);
     };

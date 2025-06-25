@@ -3,7 +3,7 @@ import { Paper, Group, Text, Badge } from '@mantine/core';
 
 import { TaskForm } from '../TaskForm';
 
-import type { Task } from '../../types';
+import type { Task, TaskIn } from '../../types';
 import { type Resource } from '../../alternate';
 import { useTaskUpdateMutation } from '../../hooks';
 
@@ -14,12 +14,12 @@ interface TaskCardProps {
 export function TaskCard(props: TaskCardProps) {
   const { task } = props;
 
-  const { title, storypoint, description } = task.payload;
+  const { title, storypoint, priority, description } = task.payload;
 
   const taskUpdateMutation = useTaskUpdateMutation(task);
 
   const handleClick = () => {
-    const handleSubmit = (values: Task) => {
+    const handleSubmit = (values: TaskIn) => {
       modals.closeAll();
       taskUpdateMutation.mutate(values);
     };
@@ -36,8 +36,17 @@ export function TaskCard(props: TaskCardProps) {
   return (
     <Paper key={task.id} p='xs' withBorder onClick={handleClick}>
       <Group justify='space-between'>
-        <Text>{title}</Text>
-        {storypoint && <Badge color='gray'>{storypoint}</Badge>}
+        <Text>
+          {title}
+        </Text>
+        <Group gap='2px'>
+          {priority && (
+            <Badge color='gray' tt='none'>
+              {priority?.payload.label}
+            </Badge>
+          )}
+          {storypoint && <Badge color='gray'>{storypoint}</Badge>}
+        </Group>
       </Group>
       <Group>
         <Text size='xs' c='dimmed'>
