@@ -11,5 +11,11 @@ export default defineConfig(({ mode }) => {
       __APP_NAME__: JSON.stringify(env.VITE_APP_NAME),
       __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
     },
+    resolve: {
+      alias: {
+        // /esm/icons/index.mjs only exports the icons statically, so no separate chunks are created
+        '@tabler/icons-react': '@tabler/icons-react/dist/esm/icons/index.mjs',
+      },
+    },
   };
 });
