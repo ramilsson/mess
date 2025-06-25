@@ -1,11 +1,12 @@
 import { modals } from '@mantine/modals';
-import { Paper, Group, Text, Badge } from '@mantine/core';
+import { Paper, Group, Text, Badge, ThemeIcon } from '@mantine/core';
 
 import { TaskForm } from '../TaskForm';
 
 import type { Task, TaskIn } from '../../types';
 import { type Resource } from '../../alternate';
 import { useTaskUpdateMutation } from '../../hooks';
+import { taskPriorityIconByCode } from './const';
 
 interface TaskCardProps {
   task: Resource<Task>;
@@ -36,16 +37,23 @@ export function TaskCard(props: TaskCardProps) {
   return (
     <Paper key={task.id} p='xs' withBorder onClick={handleClick}>
       <Group justify='space-between'>
-        <Text>
-          {title}
-        </Text>
+        <Text>{title}</Text>
         <Group gap='2px'>
           {priority && (
-            <Badge color='gray' tt='none'>
-              {priority?.payload.label}
+            <ThemeIcon
+              variant='white'
+              size='sm'
+              c={priority.payload.color}
+              title={priority.payload.label}
+            >
+              {taskPriorityIconByCode[priority.payload.code]}
+            </ThemeIcon>
+          )}
+          {storypoint && (
+            <Badge variant='light' color='gray' size='sm'>
+              {storypoint}
             </Badge>
           )}
-          {storypoint && <Badge color='gray'>{storypoint}</Badge>}
         </Group>
       </Group>
       <Group>

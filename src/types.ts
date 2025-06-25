@@ -24,4 +24,5 @@ export type TaskStatus = {
 export type TaskPriority = {
   code: string;
   label: string;
+  color: string;
 };
