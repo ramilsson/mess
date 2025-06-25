@@ -47,7 +47,7 @@ export function TaskForm(props: TaskFormProps) {
       title: initialValues?.title || 'Task',
       description: initialValues?.description || '',
       storypoint: initialValues?.storypoint || STORYPOINT_OPTIONS[0],
-      priority: initialValues?.priority?.id || '',
+      priority: initialValues?.priority.id || '',
       status: initialValues?.status.id || taskStatusOptions?.[0]?.value || '',
     },
     validate: {

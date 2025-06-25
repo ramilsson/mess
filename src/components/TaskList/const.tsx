@@ -16,3 +16,10 @@ export const taskPriorityIconByCode: Record<
   HIGH: <IconChevronUp />,
   CRITICAL: <IconChevronsUp />,
 };
+
+export const taskPriorityOrderByCode: Record<TaskPriority['code'], number> = {
+  LOW: 3,
+  NORMAL: 2,
+  HIGH: 1,
+  CRITICAL: 0,
+};

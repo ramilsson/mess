@@ -5,7 +5,7 @@ export type Task = {
   description: string;
   storypoint: string;
   status: Resource<TaskStatus>;
-  priority?: Resource<TaskPriority>;
+  priority: Resource<TaskPriority>;
 };
 
 export type TaskIn = {
@@ -13,7 +13,7 @@ export type TaskIn = {
   description: string;
   storypoint: string;
   status: Resource<TaskStatus>['id'];
-  priority?: Resource<TaskPriority>['id'];
+  priority: Resource<TaskPriority>['id'];
 };
 
 export type TaskStatus = {

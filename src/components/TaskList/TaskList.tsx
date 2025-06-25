@@ -6,6 +6,7 @@ import { TaskCard } from './TaskCard';
 import type { TaskStatus } from '../../types';
 import { useTasksQuery } from '../../hooks';
 import type { Resource } from '../../alternate';
+import { taskPriorityOrderByCode } from './const';
 
 interface TaskListProps {
   status: Resource<TaskStatus>;
@@ -17,7 +18,16 @@ export function TaskList(props: TaskListProps) {
   const { data: tasks } = useTasksQuery();
 
   const filteredTasks = useMemo(() => {
-    return tasks?.filter((task) => status.id === task.payload.status.id);
+    return tasks
+      ?.filter((task) => status.id === task.payload.status.id)
+      .sort((taskA, taskB) => {
+        const orderA =
+          taskPriorityOrderByCode[taskA.payload.priority.payload.code];
+        const orderB =
+          taskPriorityOrderByCode[taskB.payload.priority.payload.code];
+
+        return orderA - orderB;
+      });
   }, [tasks, status.id]);
 
   return (
