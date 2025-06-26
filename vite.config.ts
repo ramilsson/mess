@@ -17,5 +17,8 @@ export default defineConfig(({ mode }) => {
         '@tabler/icons-react': '@tabler/icons-react/dist/esm/icons/index.mjs',
       },
     },
+    build: {
+      outDir: 'build',
+    },
   };
 });
